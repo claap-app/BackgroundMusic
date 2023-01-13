@@ -74,7 +74,7 @@ void	BGM_Device::StaticInitializer()
     try
     {
         // The main instance, usually referred to in the code as "BGMDevice". This is the device
-        // that appears in System Preferences as "Background Music".
+        // that appears in System Preferences as "Claap Background Music".
         sInstance = new BGM_Device(kObjectID_Device,
                                    CFSTR(kDeviceName),
 								   CFSTR(kBGMDeviceUID),
@@ -85,28 +85,30 @@ void	BGM_Device::StaticInitializer()
 								   kObjectID_Mute_Output_Master);
         sInstance->Activate();
 
-        // The instance for system (UI) sounds.
-        sUISoundsInstance = new BGM_Device(kObjectID_Device_UI_Sounds,
-										   CFSTR(kDeviceName_UISounds),
-										   CFSTR(kBGMDeviceUID_UISounds),
-										   CFSTR(kBGMDeviceModelUID_UISounds),
-                                           kObjectID_Stream_Input_UI_Sounds,
-                                           kObjectID_Stream_Output_UI_Sounds,
-                                           kObjectID_Volume_Output_Master_UI_Sounds,
-                                           kAudioObjectUnknown);  // No mute control.
+        #if 1
+            // The instance for system (UI) sounds.
+            sUISoundsInstance = new BGM_Device(kObjectID_Device_UI_Sounds,
+                                            CFSTR(kDeviceName_UISounds),
+                                            CFSTR(kBGMDeviceUID_UISounds),
+                                            CFSTR(kBGMDeviceModelUID_UISounds),
+                                            kObjectID_Stream_Input_UI_Sounds,
+                                            kObjectID_Stream_Output_UI_Sounds,
+                                            kObjectID_Volume_Output_Master_UI_Sounds,
+                                            kAudioObjectUnknown);  // No mute control.
 
-        // Set up the UI sounds device's volume control.
-        BGM_VolumeControl& theUISoundsVolumeControl = sUISoundsInstance->mVolumeControl;
-        // Default to full volume.
-        theUISoundsVolumeControl.SetVolumeScalar(1.0f);
-        // Make the volume curve a bit steeper than the default.
-        theUISoundsVolumeControl.GetVolumeCurve().SetTransferFunction(CAVolumeCurve::kPow4Over1Curve);
-        // Apply the volume to the device's output stream. The main instance of BGM_Device doesn't
-        // apply volume to its audio because BGMApp changes the real output device's volume directly
-        // instead.
-        theUISoundsVolumeControl.SetWillApplyVolumeToAudio(true);
+            // Set up the UI sounds device's volume control.
+            BGM_VolumeControl& theUISoundsVolumeControl = sUISoundsInstance->mVolumeControl;
+            // Default to full volume.
+            theUISoundsVolumeControl.SetVolumeScalar(1.0f);
+            // Make the volume curve a bit steeper than the default.
+            theUISoundsVolumeControl.GetVolumeCurve().SetTransferFunction(CAVolumeCurve::kPow4Over1Curve);
+            // Apply the volume to the device's output stream. The main instance of BGM_Device doesn't
+            // apply volume to its audio because BGMApp changes the real output device's volume directly
+            // instead.
+            theUISoundsVolumeControl.SetWillApplyVolumeToAudio(true);
 
-        sUISoundsInstance->Activate();
+            sUISoundsInstance->Activate();
+        #endif
     }
     catch(...)
     {
