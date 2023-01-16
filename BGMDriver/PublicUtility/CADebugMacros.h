@@ -420,6 +420,7 @@ void	LogWarning(const char *fmt, ...) __printflike(1, 2);		// writes to syslog (
 				SInt32 __Err = (inError);												\
 				if(__Err != 0)															\
 				{																		\
+					DebugMsg(inMessage);													\
 					__ASSERT_STOP;														\
 				}																		\
 			}
@@ -429,6 +430,7 @@ void	LogWarning(const char *fmt, ...) __printflike(1, 2);		// writes to syslog (
 				unsigned int __Err = (unsigned int)(inError);							\
 				if(__Err != 0)															\
 				{																		\
+					DebugMsg(inMessage);													\
 					__ASSERT_STOP;														\
 				}																		\
 			}
@@ -437,6 +439,7 @@ void	LogWarning(const char *fmt, ...) __printflike(1, 2);		// writes to syslog (
 			{																			\
 				if((inPtr) == NULL)														\
 				{																		\
+					DebugMsg(inMessage);													\
 					__ASSERT_STOP;														\
 				}																		\
 			}
@@ -527,17 +530,23 @@ void	LogWarning(const char *fmt, ...) __printflike(1, 2);		// writes to syslog (
 
 #if defined(__cplusplus)
 
-#define Throw(inException)  __THROW_STOP; throw (inException)
+#define Throw(inException)  															\			
+			{																			\
+				DebugMsg("Throw an exception %u", inException); 						\							
+				__THROW_STOP; throw (inException);										\										
+			}
 
 #define	ThrowIf(inCondition, inException, inMessage)									\
 			if(inCondition)																\
 			{																			\
+				DebugMsg(inMessage);													\
 				Throw(inException);														\
 			}
 
 #define	ThrowIfNULL(inPointer, inException, inMessage)									\
 			if((inPointer) == NULL)														\
 			{																			\
+				DebugMsg(inMessage);													\
 				Throw(inException);														\
 			}
 
@@ -547,6 +556,7 @@ void	LogWarning(const char *fmt, ...) __printflike(1, 2);		// writes to syslog (
 				int __Err = (inKernelError);                                            \
 				if(__Err != 0)															\
 				{																		\
+					DebugMsg(inMessage);													\
 					Throw(inException);													\
 				}																		\
 			}
@@ -556,6 +566,7 @@ void	LogWarning(const char *fmt, ...) __printflike(1, 2);		// writes to syslog (
 				SInt32 __Err = (inError);												\
 				if(__Err != 0)															\
 				{																		\
+					DebugMsg(inMessage);													\
 					Throw(inException);													\
 				}																		\
 			}
@@ -566,6 +577,7 @@ void	LogWarning(const char *fmt, ...) __printflike(1, 2);		// writes to syslog (
 				HRESULT __Err = (inError);												\
 				if(FAILED(__Err))														\
 				{																		\
+					DebugMsg(inMessage);													\
 					Throw(inException);													\
 				}																		\
 			}
