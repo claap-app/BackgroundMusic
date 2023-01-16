@@ -34,9 +34,9 @@
 
 #pragma clang assume_nonnull begin
 
-BGM_AbstractDevice::BGM_AbstractDevice(AudioObjectID inObjectID, AudioObjectID inOwnerObjectID)
+BGM_AbstractDevice::BGM_AbstractDevice(AudioObjectID inObjectID, AudioObjectID inOwnerObjectID, UInt32 inIsHidden)
 :
-    BGM_Object(inObjectID, kAudioDeviceClassID, kAudioObjectClassID, inOwnerObjectID)
+    BGM_Object(inObjectID, kAudioDeviceClassID, kAudioObjectClassID, inOwnerObjectID, inIsHidden)
 {
 }
 
@@ -109,7 +109,7 @@ bool    BGM_AbstractDevice::IsPropertySettable(AudioObjectID inObjectID,
         case kAudioDevicePropertySafetyOffset:
         case kAudioDevicePropertyNominalSampleRate:
         case kAudioDevicePropertyAvailableNominalSampleRates:
-        case kAudioDevicePropertyIsHidden:
+        // case kAudioDevicePropertyIsHidden:
         case kAudioDevicePropertyZeroTimeStampPeriod:
             theAnswer = false;
             break;
@@ -383,15 +383,15 @@ void    BGM_AbstractDevice::GetPropertyData(AudioObjectID inObjectID,
             outDataSize = sizeof(UInt32);
             break;
 
-        case kAudioDevicePropertyIsHidden:
-            // This returns whether or not the device is visible to clients. Default to not hidden.
-            ThrowIf(inDataSize < sizeof(UInt32),
-                    CAException(kAudioHardwareBadPropertySizeError),
-                    "BGM_AbstractDevice::GetPropertyData: not enough space for the return value of "
-                    "kAudioDevicePropertyIsHidden for the device");
-            *reinterpret_cast<UInt32*>(outData) = 0;
-            outDataSize = sizeof(UInt32);
-            break;
+        // case kAudioDevicePropertyIsHidden:
+        //     // This returns whether or not the device is visible to clients. Default to not hidden.
+        //     ThrowIf(inDataSize < sizeof(UInt32),
+        //             CAException(kAudioHardwareBadPropertySizeError),
+        //             "BGM_AbstractDevice::GetPropertyData: not enough space for the return value of "
+        //             "kAudioDevicePropertyIsHidden for the device");
+        //     *reinterpret_cast<UInt32*>(outData) = 0;
+        //     outDataSize = sizeof(UInt32);
+        //     break;
 
         default:
             BGM_Object::GetPropertyData(inObjectID,
