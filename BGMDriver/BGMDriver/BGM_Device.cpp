@@ -50,7 +50,6 @@
 // System Includes
 #include <CoreAudio/AudioHardwareBase.h>
 
-
 #pragma mark Construction/Destruction
 
 pthread_once_t				BGM_Device::sStaticInitializer = PTHREAD_ONCE_INIT;
@@ -82,33 +81,35 @@ void	BGM_Device::StaticInitializer()
                                    kObjectID_Stream_Input,
                                    kObjectID_Stream_Output,
 								   kObjectID_Volume_Output_Master,
-								   kObjectID_Mute_Output_Master);
+								   kObjectID_Mute_Output_Master,
+                                   UInt32(0));
         sInstance->Activate();
 
-        #if 1
-            // The instance for system (UI) sounds.
-            sUISoundsInstance = new BGM_Device(kObjectID_Device_UI_Sounds,
-                                            CFSTR(kDeviceName_UISounds),
-                                            CFSTR(kBGMDeviceUID_UISounds),
-                                            CFSTR(kBGMDeviceModelUID_UISounds),
-                                            kObjectID_Stream_Input_UI_Sounds,
-                                            kObjectID_Stream_Output_UI_Sounds,
-                                            kObjectID_Volume_Output_Master_UI_Sounds,
-                                            kAudioObjectUnknown);  // No mute control.
+        
+        // The instance for system (UI) sounds.
+        sUISoundsInstance = new BGM_Device(kObjectID_Device_UI_Sounds,
+                                        CFSTR(kDeviceName_UISounds),
+                                        CFSTR(kBGMDeviceUID_UISounds),
+                                        CFSTR(kBGMDeviceModelUID_UISounds),
+                                        kObjectID_Stream_Input_UI_Sounds,
+                                        kObjectID_Stream_Output_UI_Sounds,
+                                        kObjectID_Volume_Output_Master_UI_Sounds,
+                                        kAudioObjectUnknown,
+                                        UInt32(1));  // No mute control.
 
-            // Set up the UI sounds device's volume control.
-            BGM_VolumeControl& theUISoundsVolumeControl = sUISoundsInstance->mVolumeControl;
-            // Default to full volume.
-            theUISoundsVolumeControl.SetVolumeScalar(1.0f);
-            // Make the volume curve a bit steeper than the default.
-            theUISoundsVolumeControl.GetVolumeCurve().SetTransferFunction(CAVolumeCurve::kPow4Over1Curve);
-            // Apply the volume to the device's output stream. The main instance of BGM_Device doesn't
-            // apply volume to its audio because BGMApp changes the real output device's volume directly
-            // instead.
-            theUISoundsVolumeControl.SetWillApplyVolumeToAudio(true);
+        // Set up the UI sounds device's volume control.
+        BGM_VolumeControl& theUISoundsVolumeControl = sUISoundsInstance->mVolumeControl;
+        // Default to full volume.
+        theUISoundsVolumeControl.SetVolumeScalar(1.0f);
+        // Make the volume curve a bit steeper than the default.
+        theUISoundsVolumeControl.GetVolumeCurve().SetTransferFunction(CAVolumeCurve::kPow4Over1Curve);
+        // Apply the volume to the device's output stream. The main instance of BGM_Device doesn't
+        // apply volume to its audio because BGMApp changes the real output device's volume directly
+        // instead.
+        theUISoundsVolumeControl.SetWillApplyVolumeToAudio(true);
 
-            sUISoundsInstance->Activate();
-        #endif
+        sUISoundsInstance->Activate();
+        
     }
     catch(...)
     {
@@ -129,9 +130,11 @@ BGM_Device::BGM_Device(AudioObjectID inObjectID,
                        AudioObjectID inInputStreamID,
                        AudioObjectID inOutputStreamID,
 					   AudioObjectID inOutputVolumeControlID,
-					   AudioObjectID inOutputMuteControlID)
+					   AudioObjectID inOutputMuteControlID,
+                       UInt32 inIsHidden
+                    )
 :
-	BGM_AbstractDevice(inObjectID, kAudioObjectPlugInObject),
+	BGM_AbstractDevice(inObjectID, kAudioObjectPlugInObject, inIsHidden),
 	mStateMutex("Device State"),
 	mIOMutex("Device IO"),
 	mDeviceName(inDeviceName),

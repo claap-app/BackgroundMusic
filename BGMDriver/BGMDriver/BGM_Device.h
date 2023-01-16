@@ -73,7 +73,8 @@ protected:
                                            AudioObjectID inInputStreamID,
                                            AudioObjectID inOutputStreamID,
                                            AudioObjectID inOutputVolumeControlID,
-										   AudioObjectID inOutputMuteControlID);
+										   AudioObjectID inOutputMuteControlID,
+                                           UInt32 inIsHidden);
     virtual						~BGM_Device();
     
     virtual void				Activate();

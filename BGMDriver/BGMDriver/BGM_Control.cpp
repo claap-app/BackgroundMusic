@@ -41,7 +41,7 @@ BGM_Control::BGM_Control(AudioObjectID inObjectID,
                          AudioObjectPropertyScope inScope,
                          AudioObjectPropertyElement inElement)
 :
-    BGM_Object(inObjectID, inClassID, inBaseClassID, inOwnerObjectID),
+    BGM_Object(inObjectID, inClassID, inBaseClassID, inOwnerObjectID, UInt32(0)),
     mScope(inScope),
     mElement(inElement)
 {

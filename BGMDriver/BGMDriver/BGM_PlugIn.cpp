@@ -67,7 +67,7 @@ void	BGM_PlugIn::StaticInitializer()
 
 BGM_PlugIn::BGM_PlugIn()
 :
-	BGM_Object(kAudioObjectPlugInObject, kAudioPlugInClassID, kAudioObjectClassID, 0),
+	BGM_Object(kAudioObjectPlugInObject, kAudioPlugInClassID, kAudioObjectClassID),
 	mMutex("BGM_PlugIn")
 {
 }

@@ -44,7 +44,7 @@ BGM_Stream::BGM_Stream(AudioObjectID inObjectID,
                        Float64 inSampleRate,
                        UInt32 inStartingChannel)
 :
-    BGM_Object(inObjectID, kAudioStreamClassID, kAudioObjectClassID, inOwnerDeviceID),
+    BGM_Object(inObjectID, kAudioStreamClassID, kAudioObjectClassID, inOwnerDeviceID, UInt32(0)),
     mStateMutex(inIsInput ? "Input Stream State" : "Output Stream State"),
     mIsInput(inIsInput),
     mIsStreamActive(false),

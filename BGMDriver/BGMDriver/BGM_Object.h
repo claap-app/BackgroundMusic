@@ -116,7 +116,8 @@ class BGM_Object
 #pragma mark Construction/Destruction
     
 public:
-						BGM_Object(AudioObjectID inObjectID, AudioClassID inClassID, AudioClassID inBaseClassID, AudioObjectID inOwnerObjectID);
+						BGM_Object(AudioObjectID inObjectID, AudioClassID inClassID, AudioClassID inBaseClassID, AudioObjectID inOwnerObjectID, UInt32 inIsHidden);
+						BGM_Object(AudioObjectID inObjectID, AudioClassID inClassID, AudioClassID inBaseClassID);
 					
 	virtual void		Activate();
 	virtual void		Deactivate();
@@ -137,6 +138,7 @@ public:
 	AudioClassID		GetBaseClassID() const		{ return mBaseClassID; }
 	AudioObjectID		GetOwnerObjectID() const	{ return mOwnerObjectID; }
 	bool				IsActive() const			{ return mIsActive; }
+	UInt32				IsHidden() const			{ return mIsHidden; }
 
 #pragma mark Property Operations
     
@@ -155,6 +157,7 @@ protected:
 	AudioClassID		mBaseClassID;
 	AudioObjectID		mOwnerObjectID;
 	bool				mIsActive;
+	UInt32				mIsHidden;
 
 };
 

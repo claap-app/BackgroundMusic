@@ -67,7 +67,7 @@ void    BGM_NullDevice::StaticInitializer()
 
 BGM_NullDevice::BGM_NullDevice()
 :
-    BGM_AbstractDevice(kObjectID_Device_Null, kAudioObjectPlugInObject),
+    BGM_AbstractDevice(kObjectID_Device_Null, kAudioObjectPlugInObject, UInt32(0)),
     mStateMutex("Null Device State"),
     mIOMutex("Null Device IO"),
     mStream(kObjectID_Stream_Null, kObjectID_Device_Null, false, kSampleRate)

@@ -184,6 +184,12 @@ static const AudioObjectPropertyAddress kBGMMusicPlayerProcessIDAddress = {
     kAudioObjectPropertyElementMaster
 };
 
+static const AudioObjectPropertyAddress kAudioDevicePropertyIsHiddenAddress = {
+    kAudioDevicePropertyIsHidden,
+    kAudioObjectPropertyScopeGlobal,
+    kAudioObjectPropertyElementMaster
+};
+
 static const AudioObjectPropertyAddress kBGMMusicPlayerBundleIDAddress = {
     kAudioDeviceCustomPropertyMusicPlayerBundleID,
     kAudioObjectPropertyScopeGlobal,

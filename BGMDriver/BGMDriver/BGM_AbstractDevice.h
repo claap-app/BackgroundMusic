@@ -38,7 +38,7 @@ class BGM_AbstractDevice
 
 protected:
                                 BGM_AbstractDevice(AudioObjectID inObjectID,
-                                                   AudioObjectID inOwnerObjectID);
+                                                   AudioObjectID inOwnerObjectID, UInt32 inIsHidden);
     virtual                     ~BGM_AbstractDevice();
 
 #pragma mark Property Operations
