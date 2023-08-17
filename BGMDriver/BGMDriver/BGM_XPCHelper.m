@@ -38,6 +38,7 @@
 
 static const UInt64 REMOTE_CALL_DEFAULT_TIMEOUT_SECS = 30;
 
+#pragma clang diagnostic ignored "-Wstrict-prototypes"
 static NSXPCConnection* CreateXPCHelperConnection()
 {
     // Create a connection to BGMXPCHelper's Mach service. If it isn't already running, launchd will start BGMXPCHelper when we send

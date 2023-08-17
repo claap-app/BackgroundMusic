@@ -101,21 +101,23 @@ public:
 
 //  STL Helpers
 public:
+	#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 	struct EqualTo : public std::binary_function<AudioObjectPropertyAddress, AudioObjectPropertyAddress, bool>
 	{
 		bool	operator()(const AudioObjectPropertyAddress& inAddress1, const AudioObjectPropertyAddress& inAddress2) const								{ return IsSameAddress(inAddress1, inAddress2); }
 	};
-
+	#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 	struct LessThan : public std::binary_function<AudioObjectPropertyAddress, AudioObjectPropertyAddress, bool>
 	{
 		bool	operator()(const AudioObjectPropertyAddress& inAddress1, const AudioObjectPropertyAddress& inAddress2) const								{ return IsLessThanAddress(inAddress1, inAddress2); }
 	};
-
+	#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 	struct CongruentEqualTo : public std::binary_function<AudioObjectPropertyAddress, AudioObjectPropertyAddress, bool>
 	{
 		bool	operator()(const AudioObjectPropertyAddress& inAddress1, const AudioObjectPropertyAddress& inAddress2) const								{ return IsCongruentAddress(inAddress1, inAddress2); }
 	};
 
+	#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 	struct CongruentLessThan : public std::binary_function<AudioObjectPropertyAddress, AudioObjectPropertyAddress, bool>
 	{
 		bool	operator()(const AudioObjectPropertyAddress& inAddress1, const AudioObjectPropertyAddress& inAddress2) const								{ return IsCongruentLessThanAddress(inAddress1, inAddress2); }
