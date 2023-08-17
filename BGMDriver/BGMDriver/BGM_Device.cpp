@@ -82,7 +82,8 @@ void	BGM_Device::StaticInitializer()
                                    kObjectID_Stream_Input,
                                    kObjectID_Stream_Output,
 								   kObjectID_Volume_Output_Master,
-								   kObjectID_Mute_Output_Master);
+								   kObjectID_Mute_Output_Master,
+                                   UInt32(0));
         sInstance->Activate();
 
         #if 1
@@ -94,7 +95,8 @@ void	BGM_Device::StaticInitializer()
                                             kObjectID_Stream_Input_UI_Sounds,
                                             kObjectID_Stream_Output_UI_Sounds,
                                             kObjectID_Volume_Output_Master_UI_Sounds,
-                                            kAudioObjectUnknown);  // No mute control.
+                                            kAudioObjectUnknown,
+                                            UInt32(1));  // No mute control.
 
             // Set up the UI sounds device's volume control.
             BGM_VolumeControl& theUISoundsVolumeControl = sUISoundsInstance->mVolumeControl;
@@ -129,9 +131,10 @@ BGM_Device::BGM_Device(AudioObjectID inObjectID,
                        AudioObjectID inInputStreamID,
                        AudioObjectID inOutputStreamID,
 					   AudioObjectID inOutputVolumeControlID,
-					   AudioObjectID inOutputMuteControlID)
+					   AudioObjectID inOutputMuteControlID,
+                       UInt32 inIsHidden)
 :
-	BGM_AbstractDevice(inObjectID, kAudioObjectPlugInObject),
+	BGM_AbstractDevice(inObjectID, kAudioObjectPlugInObject, inIsHidden),
 	mStateMutex("Device State"),
 	mIOMutex("Device IO"),
 	mDeviceName(inDeviceName),

@@ -42,13 +42,24 @@
 
 #pragma mark Construction/Destruction
 
-BGM_Object::BGM_Object(AudioObjectID inObjectID, AudioClassID inClassID, AudioClassID inBaseClassID, AudioObjectID inOwnerObjectID)
+BGM_Object::BGM_Object(AudioObjectID inObjectID, AudioClassID inClassID, AudioClassID inBaseClassID, AudioObjectID inOwnerObjectID, UInt32 inIsHidden)
 :
 	mObjectID(inObjectID),
 	mClassID(inClassID),
 	mBaseClassID(inBaseClassID),
 	mOwnerObjectID(inOwnerObjectID),
-	mIsActive(false)
+	mIsActive(false),
+	mIsHidden(inIsHidden)
+{
+}
+
+BGM_Object::BGM_Object(AudioObjectID inObjectID, AudioClassID inClassID, AudioClassID inBaseClassID)
+:
+	mObjectID(inObjectID),
+	mClassID(inClassID),
+	mBaseClassID(inBaseClassID),
+	mIsActive(false),
+	mIsHidden(UInt32(0))
 {
 }
 
@@ -79,6 +90,7 @@ bool	BGM_Object::HasProperty(AudioObjectID inObjectID, pid_t inClientPID, const 
 		case kAudioObjectPropertyClass:
 		case kAudioObjectPropertyOwner:
 		case kAudioObjectPropertyOwnedObjects:
+		case kAudioDevicePropertyIsHidden:
 			theAnswer = true;
 			break;
 	};
@@ -91,11 +103,12 @@ bool	BGM_Object::IsPropertySettable(AudioObjectID inObjectID, pid_t inClientPID,
 	
 	bool theAnswer = false;
 	switch(inAddress.mSelector)
-	{
+	{	
 		case kAudioObjectPropertyBaseClass:
 		case kAudioObjectPropertyClass:
 		case kAudioObjectPropertyOwner:
 		case kAudioObjectPropertyOwnedObjects:
+		case kAudioDevicePropertyIsHidden:
 			theAnswer = false;
 			break;
 		
@@ -123,6 +136,10 @@ UInt32	BGM_Object::GetPropertyDataSize(AudioObjectID inObjectID, pid_t inClientP
 			
 		case kAudioObjectPropertyOwnedObjects:
 			theAnswer = 0;
+			break;
+
+		case kAudioDevicePropertyIsHidden:
+			theAnswer = sizeof(UInt32);
 			break;
 		
 		default:
@@ -165,6 +182,16 @@ void	BGM_Object::GetPropertyData(AudioObjectID inObjectID, pid_t inClientPID, co
 			//	this property.
 			outDataSize = 0;
 			break;
+
+		case kAudioDevicePropertyIsHidden:
+            // This returns whether or not the device is visible to clients. Default to not hidden.
+            ThrowIf(inDataSize < sizeof(UInt32),
+                    CAException(kAudioHardwareBadPropertySizeError),
+                    "BGM_AbstractDevice::GetPropertyData: not enough space for the return value of "
+                    "kAudioDevicePropertyIsHidden for the device");
+            *reinterpret_cast<UInt32*>(outData) = mIsHidden;
+            outDataSize = sizeof(UInt32);
+            break;
 		
 		default:
 			Throw(CAException(kAudioHardwareUnknownPropertyError));
