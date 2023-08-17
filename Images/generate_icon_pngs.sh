@@ -33,7 +33,7 @@ IFS=$'\n\t'
 echo Copying FermataIcon.pdf into FermataIcon.imageset for the status bar icon
 echo ----
 
-(set -x; cp FermataIcon.pdf ../BGMApp/BGMApp/Images.xcassets/FermataIcon.imageset/)
+(set -x; cp Claap.pdf ../BGMApp/BGMApp/Images.xcassets/FermataIcon.imageset/)
 
 echo
 echo Generating app icon for BGMApp
@@ -42,7 +42,7 @@ echo ----
 cp ../BGMApp/BGMApp/Images.xcassets/AppIcon.appiconset/Contents.json \
     ../BGMApp/BGMApp/Images.xcassets/AppIcon.appiconset/Contents.json.brb
 
-sh iconizer.sh FermataIcon.pdf ../BGMApp/BGMApp
+sh iconizer.sh Claap.pdf ../BGMApp/BGMApp
 
 # Delete unused sizes
 cd ../BGMApp/BGMApp/Images.xcassets/AppIcon.appiconset/
